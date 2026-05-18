@@ -1023,7 +1023,11 @@ async function updateAIResultsFromData(data: any[]) {
       // Try to save to Firestore but don't block if it fails
       if (db) {
         db.collection('ai_results').doc(aiData.id).set(aiData, { merge: true }).catch(err => {
-          console.error(`[Firestore] Error saving ${traderName}:`, err.message);
+          if (err.message.includes('firestore.googleapis.com')) {
+             console.error(`[CRITICAL] Firestore API is DISABLED in project ${db.projectId || 'unknown'}. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
+          } else {
+             console.error(`[Firestore] Error saving ${traderName}:`, err.message);
+          }
         });
       }
     } catch (err: any) {
