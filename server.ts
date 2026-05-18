@@ -399,8 +399,12 @@ async function startServer() {
           if (!snapshot.empty) {
             finalResults = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           }
-        } catch (fErr) {
-          console.warn("[Firestore] Results fetch failed, using SQLite.");
+        } catch (fErr: any) {
+          if (fErr.message.includes('firestore.googleapis.com')) {
+             console.error(`[CRITICAL] Firestore API is DISABLED. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
+          } else {
+             console.warn("[Firestore] Results fetch failed, using SQLite.");
+          }
         }
       }
       
@@ -942,8 +946,12 @@ async function updateAIResultsFromData(data: any[]) {
     try {
       const snapshot = await db.collection('ai_results').get();
       existingResults = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
-    } catch (e) {
-      console.warn("[Sync] Firestore fetch failed, falling back to SQLite for merge info.");
+    } catch (e: any) {
+      if (e.message.includes('firestore.googleapis.com')) {
+         console.error("[Sync] Firestore API Disabled - Using SQLite only.");
+      } else {
+         console.warn("[Sync] Firestore fetch failed, falling back to SQLite for merge info.");
+      }
     }
   }
   
