@@ -20,10 +20,13 @@ export async function handleResponse(res: Response) {
   try {
     return JSON.parse(text);
   } catch (e) {
-    console.error("JSON Parse Error info:", { text: text.substring(0, 100), status: res.status });
-    // If it's HTML, return null or throw clearer error
+    console.error("JSON Parse Error info:", { text: text.substring(0, 100), status: res.status, url: res.url });
+    // If it's HTML, return an empty array if it looks like a list fetch, or null
     if (text.trim().startsWith("<!doctype") || text.trim().startsWith("<html")) {
         console.warn("Received HTML instead of JSON from", res.url);
+        if (res.url.includes('ai-results') || res.url.includes('community') || res.url.includes('notifications')) {
+          return [];
+        }
         return null;
     }
     throw e;

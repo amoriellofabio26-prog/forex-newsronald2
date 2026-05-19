@@ -352,6 +352,14 @@ async function startServer() {
   app.use(cors());
   app.use(express.json());
 
+  // Log all requests for debugging
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      console.log(`[API Request] ${req.method} ${req.path}`);
+    }
+    next();
+  });
+
   // Middleware to ensure database is ready
   app.use((req, res, next) => {
     if (req.path.startsWith('/api') && !sqliteDb && req.path !== '/api/health') {
