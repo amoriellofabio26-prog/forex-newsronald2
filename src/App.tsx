@@ -67,6 +67,12 @@ export default function App() {
   const [isStandalone, setIsStandalone] = useState(false);
 
   const isAdmin = contextIsAdmin;
+  const [isForcedLoading, setIsForcedLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsForcedLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Sync unread state for Community
   useEffect(() => {
@@ -239,14 +245,79 @@ export default function App() {
     window.matchMedia('(display-mode: standalone)').addEventListener('change', checkStandalone);
   }, []);
 
-  if (loading) {
+  if (isForcedLoading || (loading && !user)) {
     return (
       <div className="h-screen w-full bg-bg-dark flex flex-col items-center justify-center space-y-4">
-        <div className="w-20 h-20 rounded-2xl overflow-hidden animate-pulse">
-           <img src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" alt="Loading..." className="w-full h-full object-cover" />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-24 h-24 rounded-2xl overflow-hidden shadow-2xl shadow-brand-gold/20"
+        >
+           <img src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" alt="Forex News" className="w-full h-full object-cover" />
+        </motion.div>
+        <div className="flex flex-col items-center gap-2">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-gold"></div>
+          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Forex News Oficial</p>
         </div>
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-gold"></div>
-        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Conectando ao Terminal...</p>
+      </div>
+    );
+  }
+
+  // Show login screen if not authenticated
+  if (!user) {
+    return (
+      <div className="h-screen w-full bg-bg-dark flex items-center justify-center p-6 immersive-gradient overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-[400px] bg-bg-sidebar/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-10 flex flex-col items-center relative shadow-2xl"
+        >
+          {/* Decorative glow */}
+          <div className="absolute -top-20 -left-20 w-40 h-40 bg-brand-gold/10 blur-[80px] rounded-full" />
+          <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-brand-gold/10 blur-[80px] rounded-full" />
+          
+          <div className="w-32 h-32 mb-8 relative group">
+            <div className="absolute inset-0 bg-brand-gold/20 blur-2xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700" />
+            <img 
+              src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" 
+              alt="Forex News" 
+              className="w-full h-full object-contain relative z-10" 
+            />
+          </div>
+          
+          <h2 className="text-3xl font-black text-white italic tracking-tighter mb-2 text-center uppercase">
+            Terminal <span className="text-brand-gold">Exclusivo</span>
+          </h2>
+          <p className="text-gray-500 text-sm font-medium mb-10 text-center uppercase tracking-widest">
+            Entre para acessar o terminal oficial
+          </p>
+          
+          <button 
+            onClick={() => signInWithGoogle()}
+            className="w-full bg-white text-black font-black py-4 px-6 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-gold hover:text-bg-dark transition-all duration-300 group shadow-xl shadow-black/20"
+          >
+            <UserPlus className="h-5 w-5 group-hover:scale-110 transition-transform" />
+            <span>ENTRAR COM GOOGLE</span>
+          </button>
+          
+          <p className="mt-8 text-[10px] text-gray-600 font-bold uppercase tracking-widest text-center">
+            Trading de Alta Performance • Forex News
+          </p>
+
+          <div className="mt-10 pt-6 border-t border-white/5 w-full">
+            <div className="flex items-center justify-center gap-4">
+               <div className="flex flex-col items-center">
+                  <span className="text-brand-gold font-black text-lg">+10k</span>
+                  <span className="text-[8px] text-gray-500 font-bold uppercase">Membros</span>
+               </div>
+               <div className="w-px h-6 bg-white/10" />
+               <div className="flex flex-col items-center">
+                  <span className="text-brand-green font-black text-lg">98%</span>
+                  <span className="text-[8px] text-gray-500 font-bold uppercase">Precisão</span>
+               </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     );
   }
