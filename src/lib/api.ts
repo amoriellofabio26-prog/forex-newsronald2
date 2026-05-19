@@ -1,6 +1,14 @@
 import { AIResult, CommunityUpdate, DailyAnalysis } from "../types";
 
-const API_BASE = "/api";
+const getApiBase = () => {
+  const envUrl = import.meta.env.VITE_APP_URL;
+  if (envUrl && envUrl.trim() !== "") {
+    return envUrl.endsWith('/') ? `${envUrl}api` : `${envUrl}/api`;
+  }
+  return "/api";
+};
+
+const API_BASE = getApiBase();
 export const API_ROOT = API_BASE;
 
 export async function handleResponse(res: Response) {

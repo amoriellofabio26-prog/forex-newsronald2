@@ -133,25 +133,28 @@ async function initFirebase() {
     }
     
     const configDbId = firebaseConfig.firestoreDatabaseId;
-    db = getFirestore(app, configDbId || undefined);
+    const dbId = configDbId && configDbId.trim() !== "" ? configDbId : '(default)';
+    db = getFirestore(app, dbId);
     messaging = getMessaging(app);
     
+    console.log(`[Firebase] Initialized for project: ${app.options.projectId || serviceAccount?.project_id} | Database: ${dbId}`);
+    
     // Verificação de conexão imediata
-    db.collection('updates').limit(1).get().then(() => {
-        console.log("[Firebase] Health check SUCCEEDED (updates collection accessible).");
+    db.collection('health_check').limit(1).get().then(() => {
+        console.log("[Firebase] Health check SUCCEEDED.");
         firebaseStatus.connection = "connected";
     }).catch((err: any) => {
-      firebaseStatus.connection = "error";
       firebaseStatus.error = err.message;
-      if (err.message.includes('UNAUTHENTICATED')) {
-         console.error("[Firebase] Credential Warning: UNAUTHENTICATED. Code:", err.code);
-         if (serviceAccount) {
-           console.error("[Firebase] Project ID in SA:", serviceAccount.project_id);
-           console.error("[Firebase] Client Email in SA:", serviceAccount.client_email);
-           console.error("[Firebase] Private Key present:", !!serviceAccount.private_key);
-         }
+      if (err.code === 5 || err.message.includes('NOT_FOUND') || err.message.includes('database was not found')) {
+         console.warn(`[Firebase] Firestore database not found in project ${firebaseConfig.projectId}. 
+          Ensure Firestore is created in the Firebase Console (Database ID: ${dbId}).
+          The app will use local SQLite storage as a fallback.`);
+         firebaseStatus.connection = "database_not_found";
+         // We do NOT set db = null here so it can retry later if needed, 
+         // but the code already checks for firebaseStatus.connection before important operations.
       } else {
          console.warn("[Firebase] Health check warning:", err.message);
+         firebaseStatus.connection = "error";
       }
     });
   } catch (error) {
@@ -403,8 +406,7 @@ async function startServer() {
           if (fErr.message.includes('firestore.googleapis.com')) {
              console.error(`[CRITICAL] Firestore API is DISABLED. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
           } else if (fErr.code === 5 || fErr.message.includes('NOT_FOUND')) {
-             console.error(`[CRITICAL] Firestore Database NOT FOUND. Project: ${db?._referenceContext?.projectId || 'unknown'}. Possible Database ID mismatch.`);
-             console.warn("[Firestore] Falling back to SQLite.");
+             // Silence NOT_FOUND errors after the first check in initializeFirebase
           } else {
              console.warn("[Firestore] Results fetch failed, using SQLite.");
           }
@@ -953,7 +955,7 @@ async function updateAIResultsFromData(data: any[]) {
       if (e.message.includes('firestore.googleapis.com')) {
          console.error("[Sync] Firestore API Disabled - Using SQLite only.");
       } else if (e.code === 5 || e.message.includes('NOT_FOUND')) {
-         console.error(`[Sync] Firestore Database NOT FOUND. Please check project/database configuration.`);
+         // Silently fallback if Already identified on startup
       } else {
          console.warn("[Sync] Firestore fetch failed, falling back to SQLite for merge info.");
       }
@@ -1039,7 +1041,7 @@ async function updateAIResultsFromData(data: any[]) {
           if (err.message.includes('firestore.googleapis.com')) {
              console.error(`[CRITICAL] Firestore API is DISABLED in project ${db.projectId || 'unknown'}. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
           } else if (err.code === 5 || err.message.includes('NOT_FOUND')) {
-             console.error(`[Firestore] FAILED to save ${traderName}: Database not found. Check project setup.`);
+             // Silently ignore if database is not created yet
           } else {
              console.error(`[Firestore] Error saving ${traderName}:`, err.message);
           }

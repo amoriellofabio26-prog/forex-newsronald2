@@ -3,7 +3,7 @@
   "appId": "ACTUAL_APP_ID_FROM_CONSOLE",
   "apiKey": "ACTUAL_API_KEY_FROM_CONSOLE",
   "authDomain": "forew-news-ronald.firebaseapp.com",
-  "firestoreDatabaseId": "",
+  "firestoreDatabaseId": "(default)",
   "storageBucket": "forew-news-ronald.firebasestorage.app",
   "messagingSenderId": "ACTUAL_SENDER_ID_FROM_CONSOLE",
   "measurementId": ""
