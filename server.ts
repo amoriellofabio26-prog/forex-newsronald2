@@ -402,6 +402,9 @@ async function startServer() {
         } catch (fErr: any) {
           if (fErr.message.includes('firestore.googleapis.com')) {
              console.error(`[CRITICAL] Firestore API is DISABLED. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
+          } else if (fErr.code === 5 || fErr.message.includes('NOT_FOUND')) {
+             console.error(`[CRITICAL] Firestore Database NOT FOUND. Project: ${db?._referenceContext?.projectId || 'unknown'}. Possible Database ID mismatch.`);
+             console.warn("[Firestore] Falling back to SQLite.");
           } else {
              console.warn("[Firestore] Results fetch failed, using SQLite.");
           }
@@ -949,6 +952,8 @@ async function updateAIResultsFromData(data: any[]) {
     } catch (e: any) {
       if (e.message.includes('firestore.googleapis.com')) {
          console.error("[Sync] Firestore API Disabled - Using SQLite only.");
+      } else if (e.code === 5 || e.message.includes('NOT_FOUND')) {
+         console.error(`[Sync] Firestore Database NOT FOUND. Please check project/database configuration.`);
       } else {
          console.warn("[Sync] Firestore fetch failed, falling back to SQLite for merge info.");
       }
@@ -1033,6 +1038,8 @@ async function updateAIResultsFromData(data: any[]) {
         db.collection('ai_results').doc(aiData.id).set(aiData, { merge: true }).catch(err => {
           if (err.message.includes('firestore.googleapis.com')) {
              console.error(`[CRITICAL] Firestore API is DISABLED in project ${db.projectId || 'unknown'}. Please enable it at: https://console.cloud.google.com/apis/library/firestore.googleapis.com`);
+          } else if (err.code === 5 || err.message.includes('NOT_FOUND')) {
+             console.error(`[Firestore] FAILED to save ${traderName}: Database not found. Check project setup.`);
           } else {
              console.error(`[Firestore] Error saving ${traderName}:`, err.message);
           }

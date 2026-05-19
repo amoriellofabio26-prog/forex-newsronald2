@@ -3,12 +3,12 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: "AIzaSyCYTZtRcsUuH3Kv-znweZW-XmfmNHDpb5o",
-  authDomain: "gen-lang-client-0877834251.firebaseapp.com",
-  projectId: "gen-lang-client-0877834251",
-  storageBucket: "gen-lang-client-0877834251.firebasestorage.app",
-  messagingSenderId: "857051692096",
-  appId: "1:857051692096:web:2e3dea5525938a3c41b3a5"
+  apiKey: "ACTUAL_API_KEY_FROM_CONSOLE",
+  authDomain: "forew-news-ronald.firebaseapp.com",
+  projectId: "forew-news-ronald",
+  storageBucket: "forew-news-ronald.firebasestorage.app",
+  messagingSenderId: "ACTUAL_SENDER_ID_FROM_CONSOLE",
+  appId: "ACTUAL_APP_ID_FROM_CONSOLE"
 });
 
 self.addEventListener('install', (event) => {
