@@ -19,14 +19,12 @@ import {
   Trash2,
   Edit2,
   Save,
-  LogOut,
   ExternalLink,
   Clock,
   TrendingUp,
   Award,
   Bell,
   Smartphone,
-  UserPlus,
   CheckCircle2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -38,7 +36,6 @@ import {
   DailyAnalysis 
 } from '@/src/types';
 import { useAuth } from './lib/AuthContext';
-import { signInWithGoogle } from './lib/firebase';
 import { CommunityUpdate } from '@/src/types';
 import { handleResponse } from './lib/api';
 
@@ -56,7 +53,7 @@ import { InstallGuideSection } from './components/InstallGuideSection';
 const ADMIN_PASSWORD = "Forewnewsacesso123*";
 
 export default function App() {
-  const { user, isAdmin: contextIsAdmin, logout, loading, setLocalAdmin } = useAuth();
+  const { isAdmin: contextIsAdmin, loading, setLocalAdmin } = useAuth();
   const [activeSection, setActiveSection] = useState('news');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -245,7 +242,7 @@ export default function App() {
     window.matchMedia('(display-mode: standalone)').addEventListener('change', checkStandalone);
   }, []);
 
-  if (isForcedLoading || (loading && !user)) {
+  if (isForcedLoading) {
     return (
       <div className="h-screen w-full bg-bg-dark flex flex-col items-center justify-center space-y-4">
         <motion.div 
@@ -259,65 +256,6 @@ export default function App() {
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-gold"></div>
           <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Forex News Oficial</p>
         </div>
-      </div>
-    );
-  }
-
-  // Show login screen if not authenticated
-  if (!user) {
-    return (
-      <div className="h-screen w-full bg-bg-dark flex items-center justify-center p-6 immersive-gradient overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-[400px] bg-bg-sidebar/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-10 flex flex-col items-center relative shadow-2xl"
-        >
-          {/* Decorative glow */}
-          <div className="absolute -top-20 -left-20 w-40 h-40 bg-brand-gold/10 blur-[80px] rounded-full" />
-          <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-brand-gold/10 blur-[80px] rounded-full" />
-          
-          <div className="w-32 h-32 mb-8 relative group">
-            <div className="absolute inset-0 bg-brand-gold/20 blur-2xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700" />
-            <img 
-              src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" 
-              alt="Forex News" 
-              className="w-full h-full object-contain relative z-10" 
-            />
-          </div>
-          
-          <h2 className="text-3xl font-black text-white italic tracking-tighter mb-2 text-center uppercase">
-            Terminal <span className="text-brand-gold">Exclusivo</span>
-          </h2>
-          <p className="text-gray-500 text-sm font-medium mb-10 text-center uppercase tracking-widest">
-            Entre para acessar o terminal oficial
-          </p>
-          
-          <button 
-            onClick={() => signInWithGoogle()}
-            className="w-full bg-white text-black font-black py-4 px-6 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-gold hover:text-bg-dark transition-all duration-300 group shadow-xl shadow-black/20"
-          >
-            <UserPlus className="h-5 w-5 group-hover:scale-110 transition-transform" />
-            <span>ENTRAR COM GOOGLE</span>
-          </button>
-          
-          <p className="mt-8 text-[10px] text-gray-600 font-bold uppercase tracking-widest text-center">
-            Trading de Alta Performance • Forex News
-          </p>
-
-          <div className="mt-10 pt-6 border-t border-white/5 w-full">
-            <div className="flex items-center justify-center gap-4">
-               <div className="flex flex-col items-center">
-                  <span className="text-brand-gold font-black text-lg">+10k</span>
-                  <span className="text-[8px] text-gray-500 font-bold uppercase">Membros</span>
-               </div>
-               <div className="w-px h-6 bg-white/10" />
-               <div className="flex flex-col items-center">
-                  <span className="text-brand-green font-black text-lg">98%</span>
-                  <span className="text-[8px] text-gray-500 font-bold uppercase">Precisão</span>
-               </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     );
   }
@@ -542,46 +480,26 @@ export default function App() {
 
         {/* Admin/Stats context footer */}
         <div className="p-4 border-t border-border-dim">
-          {!user ? (
-            <div className="space-y-2">
-              <button 
-                onClick={() => signInWithGoogle()}
-                className={cn(
-                  "flex w-full items-center gap-3 rounded-xl p-3 bg-brand-gold text-bg-dark font-black hover:bg-opacity-90 transition-all text-xs uppercase tracking-wider shadow-lg shadow-brand-gold/10",
-                  !isSidebarOpen && "justify-center p-3"
-                )}
-              >
-                <UserPlus className="h-5 w-5" />
-                {isSidebarOpen && <span>Entrar / Cadastrar</span>}
-              </button>
-              <div className={cn(
-                 "flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5",
-                 !isSidebarOpen && "justify-center"
-              )}>
-                <div className="h-1.5 w-1.5 rounded-full bg-brand-green shadow-[0_0_8px_#00C896]" />
-                {isSidebarOpen && <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Servidor Online</span>}
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 px-3 py-1 bg-brand-gold/10 rounded-full border border-brand-gold/20">
-                <div className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
-                <span className="text-[9px] text-brand-gold font-bold uppercase truncate max-w-[120px]">
-                  {isAdmin ? 'ADM: ' : ''}{user.email}
-                </span>
-              </div>
-              <button 
-                onClick={() => logout()}
-                className={cn(
-                  "flex w-full items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-400/10 transition-colors text-sm",
-                  !isSidebarOpen && "justify-center"
-                )}
-              >
-                <LogOut className="h-5 w-5" />
-                {isSidebarOpen && <span className="font-medium">Sair</span>}
-              </button>
-            </div>
-          )}
+           <div className={cn(
+              "flex flex-col gap-2",
+              !isSidebarOpen && "items-center"
+           )}>
+             {isAdmin && (
+               <div className="flex items-center gap-2 px-3 py-1 bg-brand-gold/10 rounded-full border border-brand-gold/20 mb-2">
+                 <div className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
+                 <span className="text-[9px] text-brand-gold font-bold uppercase truncate">
+                   Terminal Master Ativo
+                 </span>
+               </div>
+             )}
+             <div className={cn(
+                "flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5",
+                !isSidebarOpen && "justify-center"
+             )}>
+               <div className="h-1.5 w-1.5 rounded-full bg-brand-green shadow-[0_0_8px_#00C896]" />
+               {isSidebarOpen && <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Painel Online</span>}
+             </div>
+           </div>
         </div>
         
         {/* Sidebar Toggle */}

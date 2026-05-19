@@ -40,10 +40,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    // Safety fallback: if Firebase doesn't respond in 1.5s, continue anyway
+    // Safety fallback: if Firebase doesn't respond in 800ms, continue anyway
     const safetyTimeout = setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 800);
 
     return () => {
       unsubscribe();

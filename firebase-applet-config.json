@@ -1,10 +1,10 @@
 {
-  "projectId": "forew-news-ronald",
-  "appId": "ACTUAL_APP_ID_FROM_CONSOLE",
-  "apiKey": "ACTUAL_API_KEY_FROM_CONSOLE",
-  "authDomain": "forew-news-ronald.firebaseapp.com",
-  "firestoreDatabaseId": "(default)",
-  "storageBucket": "forew-news-ronald.firebasestorage.app",
-  "messagingSenderId": "ACTUAL_SENDER_ID_FROM_CONSOLE",
+  "projectId": "celtic-pursuit-8f4nj",
+  "appId": "1:598267786511:web:4929356bb67a2bbaf0fa7a",
+  "apiKey": "AIzaSyBGSH1mlNyMaZewFyB-vl9QhjdQmLuW0N0",
+  "authDomain": "celtic-pursuit-8f4nj.firebaseapp.com",
+  "firestoreDatabaseId": "ai-studio-dd769630-e6f7-41b6-9450-b4b824bc2612",
+  "storageBucket": "celtic-pursuit-8f4nj.firebasestorage.app",
+  "messagingSenderId": "598267786511",
   "measurementId": ""
 }
