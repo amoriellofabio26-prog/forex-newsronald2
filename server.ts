@@ -1081,7 +1081,7 @@ async function updateAIResultsFromData(data: any[]) {
 async function syncSpreadsheet() {
   console.log("Starting spreadsheet sync...");
   try {
-    const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1hJDvBcirXgkd1RqwIRXFgkn0fIkm2rjSeAh28GxAnJM/gviz/tq?tqx=out:json&sheet=Resultados';
+    const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1-tSXPOjS3jJKD6yxkk9tMyN4ZjXwB7Isbsd90xLj0aU/gviz/tq?tqx=out:json&sheet=Resultados';
     const response = await fetch(SPREADSHEET_URL);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     
