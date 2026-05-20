@@ -46,6 +46,7 @@ import { AIResultsSection } from './components/AIResultsSection';
 import { RankingSection } from './components/RankingSection';
 import { CommunitySection } from './components/CommunitySection';
 import { InstallGuideSection } from './components/InstallGuideSection';
+import AdminSection from './components/AdminSection';
 
 // Components (defined below or in separate files)
 // For simplicity in this turn, I'll define some main structures here
@@ -278,6 +279,7 @@ export default function App() {
       setLocalAdmin(true);
       setShowAdminModal(false);
       setAdminPass('');
+      setActiveSection('admin');
     } else {
       alert("Senha incorreta");
     }
@@ -653,7 +655,7 @@ function SectionRouter({ section, isAdmin }: { section: string, isAdmin: boolean
     case 'ai-results': return <AIResultsSection isAdmin={isAdmin} />;
     case 'ranking': return <RankingSection />;
     case 'install': return <InstallGuideSection />;
-    case 'admin': return <div className="text-center py-20 text-gray-500 uppercase font-black tracking-widest">Acesso ao Terminal Master Concedido</div>;
+    case 'admin': return <AdminSection />;
     default: return <div>Seção em construção</div>;
   }
 }
