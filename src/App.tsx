@@ -50,7 +50,7 @@ import { InstallGuideSection } from './components/InstallGuideSection';
 // Components (defined below or in separate files)
 // For simplicity in this turn, I'll define some main structures here
 
-const ADMIN_PASSWORD = "Forewnewsacesso123*";
+const ADMIN_PASSWORD = "OperacaoForex123@";
 
 export default function App() {
   const { isAdmin: contextIsAdmin, loading, setLocalAdmin } = useAuth();
