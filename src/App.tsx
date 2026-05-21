@@ -19,6 +19,7 @@ import {
   Trash2,
   Edit2,
   Save,
+  LogOut,
   ExternalLink,
   Clock,
   TrendingUp,
@@ -46,15 +47,14 @@ import { AIResultsSection } from './components/AIResultsSection';
 import { RankingSection } from './components/RankingSection';
 import { CommunitySection } from './components/CommunitySection';
 import { InstallGuideSection } from './components/InstallGuideSection';
-import AdminSection from './components/AdminSection';
 
 // Components (defined below or in separate files)
 // For simplicity in this turn, I'll define some main structures here
 
-const ADMIN_PASSWORD = "OperacaoForex123@";
+const ADMIN_PASSWORD = "Fabinho123*";
 
 export default function App() {
-  const { isAdmin: contextIsAdmin, loading, setLocalAdmin } = useAuth();
+  const { user, isAdmin: contextIsAdmin, logout, loading, setLocalAdmin } = useAuth();
   const [activeSection, setActiveSection] = useState('news');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -63,12 +63,14 @@ export default function App() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [showApp, setShowApp] = useState(false);
 
   const isAdmin = contextIsAdmin;
-  const [isForcedLoading, setIsForcedLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsForcedLoading(false), 800);
+    const timer = setTimeout(() => {
+      setShowApp(true);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -243,20 +245,14 @@ export default function App() {
     window.matchMedia('(display-mode: standalone)').addEventListener('change', checkStandalone);
   }, []);
 
-  if (isForcedLoading) {
+  if (!showApp) {
     return (
       <div className="h-screen w-full bg-bg-dark flex flex-col items-center justify-center space-y-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-24 h-24 rounded-2xl overflow-hidden shadow-2xl shadow-brand-gold/20"
-        >
-           <img src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" alt="Forex News" className="w-full h-full object-cover" />
-        </motion.div>
-        <div className="flex flex-col items-center gap-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-gold"></div>
-          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Forex News Oficial</p>
+        <div className="w-20 h-20 rounded-2xl overflow-hidden animate-pulse">
+           <img src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" alt="Loading..." className="w-full h-full object-cover" />
         </div>
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-gold"></div>
+        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Conectando ao Terminal...</p>
       </div>
     );
   }
@@ -279,7 +275,7 @@ export default function App() {
       setLocalAdmin(true);
       setShowAdminModal(false);
       setAdminPass('');
-      setActiveSection('admin');
+      setActiveSection('ai-results');
     } else {
       alert("Senha incorreta");
     }
@@ -295,8 +291,8 @@ export default function App() {
   ];
 
   const displayMenuItems = isAdmin 
-    ? [...menuItems, { id: 'admin', label: 'Painel Gestor', icon: Save }]
-    : menuItems;
+    ? menuItems 
+    : [...menuItems, { id: 'admin', label: 'Painel Gestor', icon: Save }];
 
   const handleNotificationCTA = () => {
     if (!isStandalone) {
@@ -408,7 +404,11 @@ export default function App() {
                   <button
                     key={item.id}
                     onClick={() => {
-                      setActiveSection(item.id);
+                      if (item.id === 'admin') {
+                        setShowAdminModal(true);
+                      } else {
+                        setActiveSection(item.id);
+                      }
                       setIsMobileMenuOpen(false);
                     }}
                     className={cn(
@@ -459,7 +459,13 @@ export default function App() {
           {displayMenuItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveSection(item.id)}
+              onClick={() => {
+                if (item.id === 'admin') {
+                  setShowAdminModal(true);
+                } else {
+                  setActiveSection(item.id);
+                }
+              }}
               className={cn(
                 "group flex w-full items-center gap-3 rounded-lg p-3.5 transition-all duration-200 text-sm",
                 activeSection === item.id 
@@ -482,26 +488,36 @@ export default function App() {
 
         {/* Admin/Stats context footer */}
         <div className="p-4 border-t border-border-dim">
-           <div className={cn(
-              "flex flex-col gap-2",
-              !isSidebarOpen && "items-center"
-           )}>
-             {isAdmin && (
-               <div className="flex items-center gap-2 px-3 py-1 bg-brand-gold/10 rounded-full border border-brand-gold/20 mb-2">
-                 <div className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
-                 <span className="text-[9px] text-brand-gold font-bold uppercase truncate">
-                   Terminal Master Ativo
-                 </span>
-               </div>
-             )}
-             <div className={cn(
-                "flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5",
-                !isSidebarOpen && "justify-center"
-             )}>
-               <div className="h-1.5 w-1.5 rounded-full bg-brand-green shadow-[0_0_8px_#00C896]" />
-               {isSidebarOpen && <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Painel Online</span>}
-             </div>
-           </div>
+          {!isAdmin ? (
+            <div className="space-y-2">
+              <div className={cn(
+                 "flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5",
+                 !isSidebarOpen && "justify-center"
+              )}>
+                <div className="h-1.5 w-1.5 rounded-full bg-brand-green shadow-[0_0_8px_#00C896]" />
+                {isSidebarOpen && <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Servidor Online</span>}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 px-3 py-1 bg-brand-gold/10 rounded-full border border-brand-gold/20">
+                <div className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
+                <span className="text-[9px] text-brand-gold font-bold uppercase truncate max-w-[120px]">
+                  ADM {user ? `: ${user.email}` : ''}
+                </span>
+              </div>
+              <button 
+                onClick={() => logout()}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-400/10 transition-colors text-sm",
+                  !isSidebarOpen && "justify-center"
+                )}
+              >
+                <LogOut className="h-5 w-5" />
+                {isSidebarOpen && <span className="font-medium">Sair</span>}
+              </button>
+            </div>
+          )}
         </div>
         
         {/* Sidebar Toggle */}
@@ -655,7 +671,7 @@ function SectionRouter({ section, isAdmin }: { section: string, isAdmin: boolean
     case 'ai-results': return <AIResultsSection isAdmin={isAdmin} />;
     case 'ranking': return <RankingSection />;
     case 'install': return <InstallGuideSection />;
-    case 'admin': return <AdminSection />;
+    case 'admin': return <div className="text-center py-20 text-gray-500 uppercase font-black tracking-widest">Acesso ao Terminal Master Concedido</div>;
     default: return <div>Seção em construção</div>;
   }
 }

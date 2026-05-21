@@ -44,15 +44,10 @@ export function AIResultsSection({ isAdmin }: { isAdmin: boolean }) {
     const loadData = async () => {
       try {
         const data = await api.getAIResults();
-        if (data && Array.isArray(data)) {
-          setResults(data.sort((a, b) => a.name.localeCompare(b.name)));
-        } else {
-          console.warn("AI Results API returned invalid data:", data);
-        }
+        setResults(data.sort((a, b) => a.name.localeCompare(b.name)));
         setLoading(false);
       } catch (error) {
         console.error("Error loading AI results:", error);
-        setLoading(false);
       }
     };
     loadData();
