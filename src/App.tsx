@@ -51,7 +51,7 @@ import { InstallGuideSection } from './components/InstallGuideSection';
 // Components (defined below or in separate files)
 // For simplicity in this turn, I'll define some main structures here
 
-const ADMIN_PASSWORD = "Fabinho123*";
+const ADMIN_PASSWORD = "OperacaoForex123@";
 
 export default function App() {
   const { user, isAdmin: contextIsAdmin, logout, loading, setLocalAdmin } = useAuth();
@@ -218,7 +218,7 @@ export default function App() {
           const { showNotification } = await import('./lib/fcm');
           showNotification("✅ Notificações Ativadas!", {
             body: "Você receberá os comunicados do Forex News diretamente aqui.",
-            icon: '/pwa-192x192.png'
+            icon: 'https://i.postimg.cc/FzdcC27v/Logo-site-Forex-Ronald.png'
           });
           // Forçar atualização do CTA
           setIsStandalone(prev => prev); 
@@ -249,7 +249,7 @@ export default function App() {
     return (
       <div className="h-screen w-full bg-bg-dark flex flex-col items-center justify-center space-y-4">
         <div className="w-20 h-20 rounded-2xl overflow-hidden animate-pulse">
-           <img src="https://i.postimg.cc/fby2h1bg/logo-branca2.png" alt="Loading..." className="w-full h-full object-cover" />
+           <img src="https://i.postimg.cc/FzdcC27v/Logo-site-Forex-Ronald.png" alt="Loading..." className="w-full h-full object-cover" />
         </div>
         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-gold"></div>
         <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Conectando ao Terminal...</p>
