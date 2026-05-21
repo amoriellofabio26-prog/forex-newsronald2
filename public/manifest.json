@@ -1,6 +1,6 @@
 {
-  "name": "Forex News - Oficial",
-  "short_name": "ForexNews Oficial",
+  "name": "Forex News Oficial",
+  "short_name": "FX Oficial",
   "description": "Portal Exclusivo de Análise e Performance Trading",
   "start_url": "/",
   "display": "standalone",

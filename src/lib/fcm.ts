@@ -2,6 +2,8 @@ import { getMessaging, getToken, onMessage, isSupported, MessagePayload } from "
 import { app } from "./firebase";
 import firebaseConfig from "../../firebase-applet-config.json";
 
+const VAPID_KEY = "BAihC5Qbo2MOKtfyQ7ICdqU_NEq1S1XxDJolvIv8111vvqJ2H5s8vSzcZUwK4L3rxaYlnRKH_X7xjvb9KAhVBGE";
+
 export const requestFcmToken = async (manualVapidKey?: string) => {
   try {
     if (!('serviceWorker' in navigator)) {
@@ -26,7 +28,7 @@ export const requestFcmToken = async (manualVapidKey?: string) => {
     }
 
     const messaging = getMessaging(app);
-    const vapidKey = manualVapidKey || (firebaseConfig as any).vapidKey || import.meta.env.VITE_VAPID_PUBLIC_KEY || "BAihC5Qbo2MOKtfyQ7ICdqU_NEq1S1XxDJolvIv8111vvqJ2H5s8vSzcZUwK4L3rxaYlnRKH_X7xjvb9KAhVBGE";
+    const vapidKey = manualVapidKey || VAPID_KEY;
 
     // 2. Registro do Service Worker
     const swPath = '/firebase-messaging-sw.js';

@@ -1,5 +1,5 @@
 {
-  "name": "Forex News",
+  "name": "Forex News Oficial",
   "description": "Terminal de notícias, análises de mercado e algoritmos para Forex.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
