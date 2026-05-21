@@ -1,11 +1,11 @@
 {
-  "projectId": "celtic-pursuit-8f4nj",
-  "appId": "1:598267786511:web:4929356bb67a2bbaf0fa7a",
-  "apiKey": "AIzaSyBGSH1mlNyMaZewFyB-vl9QhjdQmLuW0N0",
-  "authDomain": "celtic-pursuit-8f4nj.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-dd769630-e6f7-41b6-9450-b4b824bc2612",
-  "storageBucket": "celtic-pursuit-8f4nj.firebasestorage.app",
+  "projectId": "forex-news-ronald",
+  "appId": "1:87701995749:web:9f1e405994d9315351940c",
+  "apiKey": "AIzaSyB1CYw1UtHwVY2wNnPp3f7Y1XmMWmlN250",
+  "authDomain": "forex-news-ronald.firebaseapp.com",
+  "storageBucket": "forex-news-ronald.firebasestorage.app",
   "messagingSenderId": "87701995749",
+  "measurementId": "G-CSQ3B6YDJ5",
   "vapidKey": "BN2T47scPJ3iJP7A0Tb6Ee9XwCpNPVRze2rOEOGqioMrOfldJA6sHi2feHXZHNqMV6ygfyVBIle7U0PExz6tXfo",
-  "measurementId": ""
+  "firestoreDatabaseId": ""
 }

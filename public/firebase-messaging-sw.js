@@ -3,12 +3,12 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: "AIzaSyBGSH1mlNyMaZewFyB-vl9QhjdQmLuW0N0",
-  authDomain: "celtic-pursuit-8f4nj.firebaseapp.com",
-  projectId: "celtic-pursuit-8f4nj",
-  storageBucket: "celtic-pursuit-8f4nj.firebasestorage.app",
+  apiKey: "AIzaSyB1CYw1UtHwVY2wNnPp3f7Y1XmMWmlN250",
+  authDomain: "forex-news-ronald.firebaseapp.com",
+  projectId: "forex-news-ronald",
+  storageBucket: "forex-news-ronald.firebasestorage.app",
   messagingSenderId: "87701995749",
-  appId: "1:598267786511:web:4929356bb67a2bbaf0fa7a"
+  appId: "1:87701995749:web:9f1e405994d9315351940c"
 });
 
 self.addEventListener('install', (event) => {
