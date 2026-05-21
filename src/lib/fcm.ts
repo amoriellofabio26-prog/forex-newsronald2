@@ -2,7 +2,7 @@ import { getMessaging, getToken, onMessage, isSupported, MessagePayload } from "
 import { app } from "./firebase";
 import firebaseConfig from "../../firebase-applet-config.json";
 
-const VAPID_KEY = "BAihC5Qbo2MOKtfyQ7ICdqU_NEq1S1XxDJolvIv8111vvqJ2H5s8vSzcZUwK4L3rxaYlnRKH_X7xjvb9KAhVBGE";
+const VAPID_KEY = "BN2T47scPJ3iJP7A0Tb6Ee9XwCpNPVRze2rOEOGqioMrOfldJA6sHi2feHXZHNqMV6ygfyVBIle7U0PExz6tXfo";
 
 export const requestFcmToken = async (manualVapidKey?: string) => {
   try {
