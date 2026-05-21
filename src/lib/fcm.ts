@@ -26,7 +26,7 @@ export const requestFcmToken = async (manualVapidKey?: string) => {
     }
 
     const messaging = getMessaging(app);
-    const vapidKey = manualVapidKey || import.meta.env.VITE_VAPID_PUBLIC_KEY || "BNZxtYsRCGDMr9lymhWNMQGrsCmyyCDS8qPsF61grmlykQ5jrch2Su83AWk3hZ45WP2FXf78ZGgYxp26pnm8jPo";
+    const vapidKey = manualVapidKey || (firebaseConfig as any).vapidKey || import.meta.env.VITE_VAPID_PUBLIC_KEY || "BAihC5Qbo2MOKtfyQ7ICdqU_NEq1S1XxDJolvIv8111vvqJ2H5s8vSzcZUwK4L3rxaYlnRKH_X7xjvb9KAhVBGE";
 
     // 2. Registro do Service Worker
     const swPath = '/firebase-messaging-sw.js';
