@@ -60,6 +60,7 @@ export default function App() {
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [adminPass, setAdminPass] = useState('');
   const [logoClicks, setLogoClicks] = useState(0);
+  const clickTimeoutRef = useRef<any>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -245,6 +246,15 @@ export default function App() {
     window.matchMedia('(display-mode: standalone)').addEventListener('change', checkStandalone);
   }, []);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (!showApp) {
     return (
       <div className="h-screen w-full bg-bg-dark flex flex-col items-center justify-center space-y-4">
@@ -259,6 +269,9 @@ export default function App() {
 
   // Logo 5-click trick for admin
   const handleLogoClick = () => {
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
     setLogoClicks(prev => {
       const next = prev + 1;
       if (next >= 5) {
@@ -267,6 +280,9 @@ export default function App() {
       }
       return next;
     });
+    clickTimeoutRef.current = setTimeout(() => {
+      setLogoClicks(0);
+    }, 2000);
   };
 
   const handleAdminAuth = async (e: FormEvent) => {
@@ -290,9 +306,7 @@ export default function App() {
     { id: 'install', label: 'Instalar App', icon: Smartphone },
   ];
 
-  const displayMenuItems = isAdmin 
-    ? menuItems 
-    : [...menuItems, { id: 'admin', label: 'Painel Gestor', icon: Save }];
+  const displayMenuItems = menuItems;
 
   const handleNotificationCTA = () => {
     if (!isStandalone) {
@@ -430,6 +444,37 @@ export default function App() {
                   </button>
                 ))}
               </nav>
+
+              {/* Admin/Stats context footer (Mobile) */}
+              <div className="p-4 border-t border-border-dim bg-bg-sidebar">
+                {!isAdmin ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                      <div className="h-1.5 w-1.5 rounded-full bg-brand-green shadow-[0_0_8px_#00C896]" />
+                      <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Servidor Online</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-brand-gold/10 rounded-full border border-brand-gold/20">
+                      <div className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
+                      <span className="text-[9px] text-brand-gold font-bold uppercase truncate max-w-[120px]">
+                        ADM {user ? `: ${user.email}` : ''}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-400/10 transition-colors text-sm"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span className="font-medium">Sair</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </>
         )}
