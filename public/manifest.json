@@ -1,29 +1,20 @@
 {
   "name": "Forex News Oficial",
-  "short_name": "FX Oficial",
-  "description": "Portal Exclusivo de Análise e Performance Trading",
+  "short_name": "Forex News",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0D0D",
   "theme_color": "#D4AF37",
-  "gcm_sender_id": "857051692096",
   "icons": [
     {
-      "src": "https://i.postimg.cc/FzdcC27v/Logo-site-Forex-Ronald.png",
+      "src": "/logo192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://i.postimg.cc/FzdcC27v/Logo-site-Forex-Ronald.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "https://i.postimg.cc/FzdcC27v/Logo-site-Forex-Ronald.png",
+      "src": "/logo512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }
